@@ -222,7 +222,6 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: 'silver',
     borderRadius: 5,
-    
     borderWidth: 1,
     marginTop: 10,
   },
@@ -252,5 +251,4 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
   },
 });
-
 export default SalarySlip;

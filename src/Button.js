@@ -37,8 +37,8 @@ const Button = ({ navigation, route }) => {
     navigation.navigate('LeaveHistory');
   };
 
-  const handleSanctionalAuthority = () => {
-    navigation.navigate('SanctionAuthority');
+  const handleLeavewithdrawal= () => {
+    navigation.navigate('Leavewithdrawal');
   };
 
   return (
@@ -66,10 +66,10 @@ const Button = ({ navigation, route }) => {
           <Text style={styles.iconText}>Leave History</Text>
         </TouchableOpacity>
 
-        {/* Sanctional Authority Button */}
-        <TouchableOpacity style={styles.iconButton} onPress={handleSanctionalAuthority}>
-          <Image source={require('./img/sanction.png')} style={styles.iconImage} />
-          <Text style={styles.iconText}>Sanctional Authority</Text>
+        {/* Leave withdrawal Button */}
+        <TouchableOpacity style={styles.iconButton} onPress={handleLeavewithdrawal}>
+          <Image source={require('./img/atm.png')} style={styles.iconImage} />
+          <Text style={styles.iconText}>Leave withdrawal</Text>
         </TouchableOpacity>
       </View>
     </View>

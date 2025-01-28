@@ -100,6 +100,7 @@ const LeaveApply = ({ route, navigation }) => {
     fetchLeaveTypes();
   }, []);
 
+  const cardsToDisplay = ['sanction', 'recommended2'];
 
   const SanctionAuthority = async () => {
     try {
@@ -530,6 +531,21 @@ const LeaveApply = ({ route, navigation }) => {
         </TouchableOpacity>
       )}
 
+
+<View style={styles.cardContainer}>
+  
+    {/* Render only the specified fields */}
+    {cardsToDisplay.map((field, index) => (
+      sanctionData[field] !== undefined && (
+        <View key={index} style={styles.row}>
+          <Text style={styles.label}>{field.replace(/([A-Z])/g, ' $1').toUpperCase()}:</Text>
+          <Text style={styles.value}>{sanctionData[field] || 'N/A'}</Text>
+        </View>
+      )
+    ))}
+  </View>
+
+
       {/* Submit Button */}
       <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Apply Leave</Text>
@@ -569,22 +585,6 @@ const LeaveApply = ({ route, navigation }) => {
         />
       )}
 
-<View style={styles.container}>
-  <View style={styles.tableContainer}>
-    {/* Render the Table Rows based on fetched data */}
-    {Object.keys(sanctionData).length > 0 ? (
-      Object.keys(sanctionData).map((key, index) => (
-        <View key={index} style={styles.row}>
-          <Text style={styles.label}>{key}:</Text>
-          <Text style={styles.value}>{sanctionData[key] || 'N/A'}</Text>
-        </View>
-      ))
-    ) : (
-      
-      null
-    )}
-  </View>
-</View>
 
     </ScrollView>
   );
@@ -598,7 +598,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
-    height: 100,
+    height: 80,
   },
   profileImage: {
     width: 80,
@@ -620,26 +620,29 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
 
+
   label: {
-    fontSize: 16,
+    fontSize: 13,
     fontWeight: 'bold',
-    marginBottom: 5,
+   
     color: '#333',
     marginLeft: 20,
   },
   pickerContainer: {
     width: '90%',
     borderColor: 'gray',
+    
     borderWidth: 1,
     borderRadius: 5,
-    marginBottom: 15,
     marginLeft: 20,
+    marginBottom: 8, 
   },
+ 
   picker: {
     height: 50,
     width: '100%',
+    icon:'black',
     color: 'black',
-
   },
   datePicker: {
     width: '90%',
@@ -647,85 +650,99 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderColor: 'gray',
     borderWidth: 1,
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 15,
+    borderRadius: 3,
+    padding: 8,
     marginLeft: 20,
+    marginBottom: 5, 
   },
   dropdownIcon: {
     position: 'absolute',
     backgroundColor: 'gray',
+    color:'black',
     right: 10,
-    top: 10,
+    top: 5,
   },
   dateText: {
     marginLeft: 10,
-    fontSize: 16,
+    fontSize: 12,
     color: '#333',
   },
   input: {
     width: '90%',
-    height: 40,
+    height: 45, 
     borderColor: 'gray',
     borderWidth: 1,
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 15,
+    borderRadius: 3,
+    paddingHorizontal: 12,
+    marginLeft: 20,
+    marginBottom: 6, 
     backgroundColor: '#fff',
     color: 'black',
-    marginLeft: 20,
   },
   subLabel: {
     fontSize: 14,
     color: 'black',
     marginLeft: 20,
+    marginBottom: 3, 
   },
   uploadButton: {
     backgroundColor: 'gray',
-    borderRadius: 5,
-    padding: 10,
+    borderRadius: 3,
+    paddingVertical: 12, 
     alignItems: 'center',
-    marginBottom: 15,
     width: '90%',
     marginLeft: 20,
+    marginBottom: 3, 
   },
   submitButton: {
     backgroundColor: 'gray',
-    borderRadius: 5,
-    padding: 10,
+    borderRadius: 4,
+    paddingVertical: 12,
     alignItems: 'center',
     width: '90%',
-    marginBottom: 10,
     marginLeft: 20,
+    marginBottom: 5,
   },
-  tableHeader: {
-    color: 'black',
-    fontSize: 15,
-    marginLeft: 20,
-    fontweight: 'bold'
+  cardContainer: {
+    backgroundColor: 'white',  
+    borderRadius: 8,          
+    shadowColor: '#000',      
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,       
+    shadowRadius: 4,
+    elevation: 3,                  
+    margin: 14,               
   },
-  tableCell: {
-    color: 'black',
-    fontSize: 15,
-    fontweight: 'bold'
+  
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 5, 
+    paddingVertical: 8, 
   },
- 
+  tableLabel: {
+    fontSize: 10,
+    fontWeight: 'bold',
+    color: '#333',
+    flex: 1, 
+    marginRight: 10,
+  },
   value: {
-    color: 'red',
-    fontSize: 15,
-    marginLeft: 20,
-    fontweight: 'bold'
+    color: 'red', 
+    fontSize: 10, 
+    fontWeight: 'bold',
+    flex: 2, 
+    textAlign: 'right',
   },
-
   buttonText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
   },
-
 });
-
 export default LeaveApply;
 
-//select* from leavetransaction where ecno='10122' order by id desc?
-//delete LeaveTransaction where ECNO='10122' and ID>=289044
+
+
+
