@@ -1,0 +1,2 @@
+react-native run-android --variant=release
+cd android && .gradlew bundleRelese -x bundleRelaseJsAndAssets

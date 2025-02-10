@@ -1,0 +1,105 @@
+{
+  "project_info": {
+    "project_number": "20613109653",
+    "project_id": "fir-f9f00",
+    "storage_bucket": "fir-f9f00.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:20613109653:android:2323984c5dde059c45089c",
+        "android_client_info": {
+          "package_name": "com.example.firebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjFw1UBgldH2G1Jkea5DY2Vi6h34HZ6gg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:20613109653:android:6b8ea0475ddcf56545089c",
+        "android_client_info": {
+          "package_name": "com.example.hrms1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjFw1UBgldH2G1Jkea5DY2Vi6h34HZ6gg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:20613109653:android:34198c2c3e3191b245089c",
+        "android_client_info": {
+          "package_name": "com.example.bupbhrms"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjFw1UBgldH2G1Jkea5DY2Vi6h34HZ6gg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:20613109653:android:0436ccdc8d90f83445089c",
+        "android_client_info": {
+          "package_name": "com.hrms1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjFw1UBgldH2G1Jkea5DY2Vi6h34HZ6gg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:20613109653:android:cbb5c479f184c0f745089c",
+        "android_client_info": {
+          "package_name": "com.bupbhrms"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjFw1UBgldH2G1Jkea5DY2Vi6h34HZ6gg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
