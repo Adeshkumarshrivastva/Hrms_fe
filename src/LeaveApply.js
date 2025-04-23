@@ -10,10 +10,13 @@ import CheckBox from '@react-native-community/checkbox';
 import axios from 'axios';
 import { uploadFiles } from 'react-native-fs';
 import { Header } from '@react-navigation/stack';
+<<<<<<< HEAD
 import Config from 'react-native-config';
 
 const apiUrl = Config.API_URL;
 
+=======
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
 const LeaveApply = ({ route, navigation }) => {
   // Safe check for profileImage in route.params, with fallback
   const initialProfileImage = route?.params?.profileImage || 'https://via.placeholder.com/80';
@@ -38,11 +41,19 @@ const LeaveApply = ({ route, navigation }) => {
   const [showUpload, setShowUpload] = useState(false);
   const [leaveReason, setReason] = useState('');
   const [chargeHandover, setChargeHandover] = useState('');
+<<<<<<< HEAD
   const [appliedOn, setAppliedOn] = useState('');
   const [applicationStatus, setAPPlicationStatus] = useState('');
   const [address, setAddress] = useState('');
   const [item, setItem] = useState('');
   const [sanctionData, setSanctionData] = useState([]);
+=======
+  const [address, setAddress] = useState('');
+  const [item, setItem] = useState('');
+  const [sanctionData, setSanctionData] = useState([]);
+
+
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
   const [uploadfileFullname, setuploadfileFullName] = useState('');
 
   useEffect(() => {
@@ -75,7 +86,11 @@ const LeaveApply = ({ route, navigation }) => {
       setIsLoading(true);
       try {
         const storedEmployeeId = await AsyncStorage.getItem('ecno');
+<<<<<<< HEAD
         const response = await fetch('https://hr360.co.in/bindLeave', {
+=======
+        const response = await fetch('http://192.168.1.9:4000/bindLeave', {
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -105,9 +120,16 @@ const LeaveApply = ({ route, navigation }) => {
   }, []);
 
   const cardsToDisplay = ['sanction', 'recommended2'];
+<<<<<<< HEAD
   const SanctionAuthority = async () => {
     try {
       const response = await fetch('https://hr360.co.in/SanctionAuthority', {
+=======
+
+  const SanctionAuthority = async () => {
+    try {
+      const response = await fetch('http://192.168.1.9:4000/SanctionAuthority', {
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -116,11 +138,22 @@ const LeaveApply = ({ route, navigation }) => {
         }),
       });
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
       if (!response.ok) {
         Alert.alert('Error', 'Failed to fetch sanction, recommended, and forwarding details.');
         return;
       }
+<<<<<<< HEAD
       const data = await response.json();
+=======
+
+      const data = await response.json();
+
+
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
       if (data.message) {
         Alert.alert('Error', data.message);
         return;
@@ -129,6 +162,10 @@ const LeaveApply = ({ route, navigation }) => {
       console.log('Sanction Authority Data:', data);
 
     } catch (error) {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
       setErrorMessage('An error occurred while fetching SanctionData.');
       console.error('Error fetching sanction data:', error);
     }
@@ -175,11 +212,19 @@ const LeaveApply = ({ route, navigation }) => {
         );
         return;
       }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
       // Validation for Sick Leave
       if (leaveTypeID === 5 && !document) {
         Alert.alert('Validation Error', 'Please upload a supporting document for Sick Leave.');
         return;
       }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
       // Validation for Casual Leave
       if (leaveTypeID === 1) {
         const diffTime = Math.abs(toDate - fromDate);
@@ -189,6 +234,7 @@ const LeaveApply = ({ route, navigation }) => {
           return;
         }
       }
+<<<<<<< HEAD
       // Prepare leave application data
       const chargeHandoverValue = chargeHandover || '';
       const addressToSave = address || '';
@@ -197,6 +243,15 @@ const LeaveApply = ({ route, navigation }) => {
       const ToSaveisLocalStay = isLocalStay || ''
       const ToSaveUploadFileFullname = uploadfileFullname || '';
       const formattedAppliedOn = appliedOn || format(new Date(), 'dd-MM-yyyy');
+=======
+
+      // Prepare leave application data
+      const chargeHandoverValue = chargeHandover || '';
+      const addressToSave = address || '';
+      const leaveReasonToSave = leaveReason || '';
+      const ToSaveisLocalStay = isLocalStay || '';
+      const ToSaveUploadFileFullname = uploadfileFullname || '';
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
       const formattedFromDate = fromDate ? format(fromDate, 'dd-MM-yyyy') : null;
       const formattedToDate = toDate ? format(toDate, 'dd-MM-yyyy') : null;
       const formattedPermissionFrom = permissionFrom ? format(permissionFrom, 'dd-MM-yyyy') : null;
@@ -213,18 +268,30 @@ const LeaveApply = ({ route, navigation }) => {
         permissionTo: formattedPermissionTo,
         isLocalStay: ToSaveisLocalStay ? 'Y' : 'N',
         chargeHandover: chargeHandoverValue,
+<<<<<<< HEAD
         appliedOn: formattedAppliedOn,
         applicationStatus: applicationStatusToSave,
         uploadfileFullname: ToSaveUploadFileFullname
       };
       console.log('Formatted data being sent to backend:', data);
       const response = await axios.post('https://hr360.co.in/LeaveApply', data, {
+=======
+        uploadfileFullname: ToSaveUploadFileFullname
+
+      };
+      console.log('Formatted data being sent to backend:', data);
+      const response = await axios.post('http://192.168.1.9:4000/LeaveTransaction', data, {
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
         headers: { 'Content-Type': 'application/json' },
       });
 
       if (response.data.success) {
         Alert.alert('Leave application submitted successfully!');
+<<<<<<< HEAD
 
+=======
+        // navigation.navigate('LeaveHistoryScreen'); 
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
       } else {
         Alert.alert(response.data.message || 'Leave application failed.');
       }
@@ -239,15 +306,28 @@ const LeaveApply = ({ route, navigation }) => {
       }
     }
   };
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
   async function LeaveApply() {
     try {
       const formattedFromDate = fromDate ? format(fromDate, 'dd-MM-yyyy') : null;
       const formattedToDate = toDate ? format(toDate, 'dd-MM-yyyy') : null;
+<<<<<<< HEAD
       const response = await axios.post('https://hr360.co.incheckForAlreadyAppliedLeave', {
+=======
+      const response = await axios.post('http://192.168.1.9:4000/checkForAlreadyAppliedLeave', {
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
         ecno: await AsyncStorage.getItem('ecno'),
         fromDate: formattedFromDate,
         toDate: formattedToDate,
       });
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
       if (response.data.success) {
         Alert.alert(`Leave already applied on these dates: ${JSON.stringify(response.data.data)}`);
         return false;
@@ -326,6 +406,10 @@ const LeaveApply = ({ route, navigation }) => {
       setStationLeavingFrom(selectedDate);
     }
   };
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
   const handleStationToDateChange = (event, selectedDate) => {
     setShowStationToDatePicker(Platform.OS === 'ios');
     console.log(selectedDate);
@@ -341,10 +425,13 @@ const LeaveApply = ({ route, navigation }) => {
           source={{ uri: profileImage || 'https://via.placeholder.com/80' }}
           style={styles.profileImage}
         />
+<<<<<<< HEAD
         {/* Back Button moved to right using inline style */}
         <TouchableOpacity onPress={() => navigation.goBack()} style={{ position: 'absolute', right: 20, top: 35 }}>
           <Image source={require('./img/BackArrow.png')} style={{ width: 50, height: 50 }} />
         </TouchableOpacity>
+=======
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
         <View style={styles.userInfo}>
           <Text style={styles.userName}>{userName || 'Not Available'}</Text>
           <Text style={styles.userId}>
@@ -352,6 +439,10 @@ const LeaveApply = ({ route, navigation }) => {
           </Text>
         </View>
       </View>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
       {/* Leave Type Picker */}
       <Text style={[styles.label, { marginTop: 40 }]}>Leave Type:</Text>
       <View style={styles.pickerContainer}>
@@ -457,11 +548,29 @@ const LeaveApply = ({ route, navigation }) => {
         {/* From Date */}
         <View style={{ flex: 1, marginRight: 10 }}>
           <Text style={[styles.label, { color: 'black' }]}>From:</Text>
+<<<<<<< HEAD
           <TouchableOpacity onPress={() => setShowFromDatePicker(true)}>
             <View style={styles.datePicker}>
               <MaterialCommunityIcons name="calendar" size={18} color="#6200EE" />
               <Text style={{ color: 'black' }}>
                 {fromDate ? format(fromDate, 'dd-MM-yyyy') : 'Enter Date'}
+=======
+          <TouchableOpacity
+            onPress={() => !isLocalStay && setShowStationFromDatePicker(true)}
+            disabled={isLocalStay}
+          >
+            <View style={[
+              styles.datePicker,
+              { backgroundColor: isLocalStay ? '#e0e0e0' : 'white' },
+            ]}>
+              <MaterialCommunityIcons
+                name="calendar"
+                size={18}
+                color={isLocalStay ? '#a9a9a9' : '#6200EE'}
+              />
+              <Text style={{ color: isLocalStay ? '#a9a9a9' : 'black' }}>
+                {permissionFrom ? format(permissionFrom, 'dd-MM-yyyy') : 'Enter Date'}
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
               </Text>
             </View>
           </TouchableOpacity>
@@ -470,17 +579,38 @@ const LeaveApply = ({ route, navigation }) => {
         {/* To Date */}
         <View style={{ flex: 1, marginRight: 10 }}>
           <Text style={[styles.label, { color: 'black' }]}>To:</Text>
+<<<<<<< HEAD
           <TouchableOpacity onPress={() => setShowToDatePicker(true)}>
             <View style={styles.datePicker}>
               <MaterialCommunityIcons name="calendar" size={18} color="#6200EE" />
               <Text style={{ color: 'black' }}>
                 {toDate ? format(toDate, 'dd-MM-yyyy') : 'Enter Date'}
+=======
+          <TouchableOpacity
+            onPress={() => !isLocalStay && setShowStationToDatePicker(true)}
+            disabled={isLocalStay}
+          >
+            <View style={[
+              styles.datePicker,
+              { backgroundColor: isLocalStay ? '#e0e0e0' : 'white' },
+            ]}>
+              <MaterialCommunityIcons
+                name="calendar"
+                size={18}
+                color={isLocalStay ? '#a9a9a9' : '#6200EE'}
+              />
+              <Text style={{ color: isLocalStay ? '#a9a9a9' : 'black' }}>
+                {permissionTo ? format(permissionTo, 'dd-MM-yyyy') : 'Enter Date'}
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
               </Text>
             </View>
           </TouchableOpacity>
         </View>
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
         {/* Local Stay Checkbox */}
         <View style={{ width: '32%', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', marginLeft: 10 }}>
           <CheckBox
@@ -508,6 +638,7 @@ const LeaveApply = ({ route, navigation }) => {
           </Text>
         </TouchableOpacity>
       )}
+<<<<<<< HEAD
       <View style={styles.cardContainer}>
         {/* Render only the specified fields */}
         {cardsToDisplay.map((field, index) => (
@@ -519,6 +650,24 @@ const LeaveApply = ({ route, navigation }) => {
           )
         ))}
       </View>
+=======
+
+
+<View style={styles.cardContainer}>
+  
+    {/* Render only the specified fields */}
+    {cardsToDisplay.map((field, index) => (
+      sanctionData[field] !== undefined && (
+        <View key={index} style={styles.row}>
+          <Text style={styles.label}>{field.replace(/([A-Z])/g, ' $1').toUpperCase()}:</Text>
+          <Text style={styles.value}>{sanctionData[field] || 'N/A'}</Text>
+        </View>
+      )
+    ))}
+  </View>
+
+
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
       {/* Submit Button */}
       <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Apply Leave</Text>
@@ -569,13 +718,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     flexDirection: 'row',
     alignItems: 'center',
+<<<<<<< HEAD
     width: '100%',
     height: 100,
+=======
+    justifyContent: 'space-between',
+    width: '100%',
+    height: 80,
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
   },
   profileImage: {
     width: 80,
     height: 80,
     borderRadius: 40,
+<<<<<<< HEAD
     borderWidth: 2,
     borderColor: '#fff',
     backgroundColor: '#ddd',
@@ -583,6 +739,11 @@ const styles = StyleSheet.create({
   },
   userInfo: {
     marginLeft: 45,
+=======
+  },
+  userInfo: {
+    marginLeft: 20,
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
     flex: 1,
   },
   userName: {
@@ -600,6 +761,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 13,
     fontWeight: 'bold',
+<<<<<<< HEAD
     color: '#333',
     marginLeft: 20,
   },
@@ -618,6 +780,26 @@ const styles = StyleSheet.create({
     height: 50,
     width: '100%',
     icon: 'red ',
+=======
+   
+    color: '#333',
+    marginLeft: 20,
+  },
+  pickerContainer: {
+    width: '90%',
+    borderColor: 'gray',
+    
+    borderWidth: 1,
+    borderRadius: 5,
+    marginLeft: 20,
+    marginBottom: 8, 
+  },
+ 
+  picker: {
+    height: 50,
+    width: '100%',
+    icon:'black',
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
     color: 'black',
   },
   datePicker: {
@@ -629,12 +811,21 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     padding: 8,
     marginLeft: 20,
+<<<<<<< HEAD
     marginBottom: 5,
   },
   Icon: {
     position: 'absolute',
     backgroundColor: 'silver',
     color: 'black',
+=======
+    marginBottom: 5, 
+  },
+  dropdownIcon: {
+    position: 'absolute',
+    backgroundColor: 'gray',
+    color:'black',
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
     right: 10,
     top: 5,
   },
@@ -645,13 +836,21 @@ const styles = StyleSheet.create({
   },
   input: {
     width: '90%',
+<<<<<<< HEAD
     height: 45,
+=======
+    height: 45, 
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
     borderColor: 'gray',
     borderWidth: 1,
     borderRadius: 3,
     paddingHorizontal: 12,
     marginLeft: 20,
+<<<<<<< HEAD
     marginBottom: 6,
+=======
+    marginBottom: 6, 
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
     backgroundColor: '#fff',
     color: 'black',
   },
@@ -659,16 +858,28 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: 'black',
     marginLeft: 20,
+<<<<<<< HEAD
     marginBottom: 3,
+=======
+    marginBottom: 3, 
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
   },
   uploadButton: {
     backgroundColor: 'gray',
     borderRadius: 3,
+<<<<<<< HEAD
     paddingVertical: 12,
     alignItems: 'center',
     width: '90%',
     marginLeft: 20,
     marginBottom: 3,
+=======
+    paddingVertical: 12, 
+    alignItems: 'center',
+    width: '90%',
+    marginLeft: 20,
+    marginBottom: 3, 
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
   },
   submitButton: {
     backgroundColor: 'gray',
@@ -680,6 +891,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   cardContainer: {
+<<<<<<< HEAD
     backgroundColor: 'white',
     borderRadius: 8,
     shadowColor: '#000',
@@ -690,17 +902,35 @@ const styles = StyleSheet.create({
     margin: 14,
   },
 
+=======
+    backgroundColor: 'white',  
+    borderRadius: 8,          
+    shadowColor: '#000',      
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,       
+    shadowRadius: 4,
+    elevation: 3,                  
+    margin: 14,               
+  },
+  
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+<<<<<<< HEAD
     marginBottom: 5,
     paddingVertical: 8,
+=======
+    marginBottom: 5, 
+    paddingVertical: 8, 
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
   },
   tableLabel: {
     fontSize: 10,
     fontWeight: 'bold',
     color: '#333',
+<<<<<<< HEAD
     flex: 1,
     marginRight: 10,
   },
@@ -709,6 +939,16 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontWeight: 'bold',
     flex: 2,
+=======
+    flex: 1, 
+    marginRight: 10,
+  },
+  value: {
+    color: 'red', 
+    fontSize: 10, 
+    fontWeight: 'bold',
+    flex: 2, 
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
     textAlign: 'right',
   },
   buttonText: {

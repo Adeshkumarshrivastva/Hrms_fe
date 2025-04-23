@@ -47,7 +47,11 @@
       "client_info": {
         "mobilesdk_app_id": "1:20613109653:android:34198c2c3e3191b245089c",
         "android_client_info": {
+<<<<<<< HEAD
           "package_name": "com.example.bupbhrms"
+=======
+          "package_name": "com.example.hrmsapp"
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
         }
       },
       "oauth_client": [],
@@ -85,7 +89,11 @@
       "client_info": {
         "mobilesdk_app_id": "1:20613109653:android:cbb5c479f184c0f745089c",
         "android_client_info": {
+<<<<<<< HEAD
           "package_name": "com.bupbhrms"
+=======
+          "package_name": "com.hrmsapp"
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
         }
       },
       "oauth_client": [],

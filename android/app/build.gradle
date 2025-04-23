@@ -2,7 +2,10 @@ apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 apply plugin: "com.google.gms.google-services"
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
 /**
  * This is the configuration block to customize your React Native Android app.
  * By default you don't need to apply any configuration, just uncomment the lines you need.
@@ -73,12 +76,16 @@ def enableProguardInReleaseBuilds = false
  */
 def jscFlavor = 'org.webkit:android-jsc:+'
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
 android {
     ndkVersion rootProject.ext.ndkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
+<<<<<<< HEAD
     namespace "com.bupbhrms"
     defaultConfig {
         applicationId "com.bupbhrms"
@@ -86,6 +93,15 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 9
         versionName "3.2.1"
+=======
+    namespace "com.hrmsapp"
+    defaultConfig {
+        applicationId "com.hrmsapp"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
     }
     signingConfigs {
         debug {
@@ -94,6 +110,7 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+<<<<<<< HEAD
         release {
             if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
                 storeFile file(MYAPP_UPLOAD_STORE_FILE)
@@ -104,12 +121,21 @@ android {
         }
     }
 
+=======
+    }
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
         }
         release {
+<<<<<<< HEAD
             signingConfig signingConfigs.release
+=======
+            // Caution! In production, you need to generate your own keystore file.
+            // see https://reactnative.dev/docs/signed-apk-android.
+            signingConfig signingConfigs.debug
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }

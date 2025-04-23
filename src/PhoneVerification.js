@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useEffect, useState } from 'react';
 import {
   StyleSheet, Text, TextInput, View, TouchableOpacity,
@@ -7,12 +8,20 @@ import { useNavigation } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DeviceInfo from 'react-native-device-info';
+=======
+import React, { useState } from 'react';
+import { StyleSheet, Text, TextInput, View, TouchableOpacity, SafeAreaView, Alert, Image, Dimensions } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import auth from '@react-native-firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
 
 const { height } = Dimensions.get('window');
 
 const PhoneVerification = () => {
   const [countryCode, setCountryCode] = useState('+91');
   const [mobileNumber, setMobileNumber] = useState('');
+<<<<<<< HEAD
   const [deviceId, setDeviceId] = useState('');
   const navigation = useNavigation();
 
@@ -62,12 +71,53 @@ const PhoneVerification = () => {
             phoneNumber: phoneNumberWithCountryCode,
             verificationId: confirmation.verificationId,
             deviceId: deviceId,
+=======
+  const navigation = useNavigation();
+
+  const handleCountryCodeChange = (code) => {
+    setCountryCode(code);
+  };
+
+  const handleInputChange = (input) => {
+    const numericInput = input.replace(/[^0-9]/g, '');
+    setMobileNumber(numericInput);
+  };
+
+  const proceed = async () => {
+    console.log('Proceed button clicked');
+    if (mobileNumber.length >= 10) {
+      let phoneNumberWithCountryCode = `${countryCode}${mobileNumber}`;
+      console.log('Checking mobile number:', mobileNumber);
+
+      try {
+        const response = await fetch('http://192.168.1.9:4000/checkMobile', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ mobileNumber }),
+        });
+
+        const result = await response.json();
+        console.log('API Response:', result);
+
+        if (result.exists) {
+          const confirmation = await auth().signInWithPhoneNumber(phoneNumberWithCountryCode);
+          await AsyncStorage.setItem('mobileNumber', mobileNumber);
+          navigation.navigate('VerifyOtp', {
+            phoneNumber: phoneNumberWithCountryCode,
+            verificationId: confirmation.verificationId,
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
           });
         } else {
           Alert.alert('Error', 'Mobile number not found.');
         }
       } catch (error) {
+<<<<<<< HEAD
         console.error('Error checking number:', error);
+=======
+        console.error('Error:', error);
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
         Alert.alert('Error', 'Failed to check mobile number.');
       }
     } else {
@@ -76,6 +126,7 @@ const PhoneVerification = () => {
   };
 
   return (
+<<<<<<< HEAD
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <View style={styles.headerTextContainer}>
@@ -122,6 +173,66 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'silver',
+=======
+    
+      <SafeAreaView style={styles.container}>
+        {/* Header */}
+        <View style={styles.header}>
+          <View style={styles.headerTextContainer}>
+            <Text style={styles.headerTextMain}>Human Resource</Text>
+            <Text style={styles.headerTextSub}>Management</Text>
+          </View>
+
+          {/* Logo on the right */}
+          <Image
+            source={require('./img/bupb_logo.webp')}
+            style={styles.logo}
+            resizeMode="contain"
+          />
+        </View>
+
+        <View style={styles.mainContent}>
+          {/* Card for inputs and button */}
+          <View style={styles.card}>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.countryCodeInput}
+                keyboardType="phone-pad"
+                placeholder="+"
+                maxLength={3}
+                value={countryCode}
+                onChangeText={handleCountryCodeChange}
+              />
+              <TextInput
+                style={styles.mobileInput}
+                keyboardType="phone-pad"
+                placeholder="Enter Mobile Number"
+                placeholderTextColor="gray"
+                maxLength={12}
+                value={mobileNumber}
+                onChangeText={handleInputChange}
+              />
+            </View>
+
+            <TouchableOpacity style={styles.button} onPress={proceed}>
+              <Text style={styles.buttonText}>Proceed</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </SafeAreaView>
+   
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    background:'silver'
+  },
+  backgroundImage: {
+    flex: 1,
+    resizeMode: 'cover',
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
   },
   header: {
     backgroundColor: 'orange',
@@ -141,16 +252,30 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: 'white',
+<<<<<<< HEAD
+=======
+    textAlign: 'center',
+    marginLeft: 5,
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
   },
   headerTextSub: {
     fontSize: 20,
     fontWeight: 'bold',
     color: 'white',
+<<<<<<< HEAD
     marginTop: 5,
   },
   logo: {
     width: 80,
     height: 130,
+=======
+    textAlign: 'center',
+    marginTop: 5,
+  },
+  logo: {
+    width: 100,
+    height: 60,
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
   },
   mainContent: {
     flex: 1,
@@ -166,7 +291,11 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
+<<<<<<< HEAD
     marginTop: '-60%',
+=======
+    marginTop:"-60%",
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
     elevation: 5,
   },
   inputContainer: {
@@ -199,6 +328,7 @@ const styles = StyleSheet.create({
     padding: 15,
     alignItems: 'center',
     borderRadius: 8,
+<<<<<<< HEAD
     width: '60%',
     alignSelf: 'center',
   },
@@ -208,4 +338,14 @@ const styles = StyleSheet.create({
   },
 });
 
+=======
+    width: '60%', 
+    alignSelf: 'center', 
+},
+  buttonText: {
+    color: 'white',
+    fontSize: 15,
+  },
+});
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
 export default PhoneVerification;

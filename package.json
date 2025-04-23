@@ -17,9 +17,15 @@
     "@react-native-community/checkbox": "^0.5.17",
     "@react-native-community/datetimepicker": "github:react-native-community/datetimepicker",
     "@react-native-community/masked-view": "^0.1.11",
+<<<<<<< HEAD
     "@react-native-firebase/app": "^21.7.4",
     "@react-native-firebase/auth": "^20.5.0",
     "@react-native-picker/picker": "^2.11.0",
+=======
+    "@react-native-firebase/app": "^20.5.0",
+    "@react-native-firebase/auth": "^20.5.0",
+    "@react-native-picker/picker": "^2.8.1",
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
     "@react-navigation/native": "^6.1.18",
     "@react-navigation/native-stack": "^6.11.0",
     "@react-navigation/stack": "^6.4.1",
@@ -28,9 +34,13 @@
     "date-fns": "^4.1.0",
     "navigator": "^1.0.1",
     "react": "18.3.1",
+<<<<<<< HEAD
     "react-native": "^0.75.3",
     "react-native-config": "^1.5.5",
     "react-native-device-info": "^14.0.4",
+=======
+    "react-native": "0.75.3",
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
     "react-native-document-picker": "^9.3.1",
     "react-native-dropdown-picker": "^5.4.6",
     "react-native-file-viewer": "^2.1.5",
@@ -39,7 +49,10 @@
     "react-native-html-to-pdf": "^0.12.0",
     "react-native-image-picker": "^7.1.2",
     "react-native-linear-gradient": "^2.8.3",
+<<<<<<< HEAD
     "react-native-network-info": "^5.2.1",
+=======
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
     "react-native-paper": "^5.12.5",
     "react-native-pdf": "^6.7.5",
     "react-native-permissions": "^4.1.5",
@@ -47,6 +60,7 @@
     "react-native-safe-area-context": "^4.11.0",
     "react-native-screens": "^3.34.0",
     "react-native-share": "^11.0.3",
+<<<<<<< HEAD
     "react-native-sim-data": "^3.0.0",
     "react-native-sms-retriever": "^1.1.1",
     "react-native-table-component": "^1.2.2",
@@ -54,6 +68,11 @@
     "react-native-webview": "^13.12.3",
     "retriever": "^1.0.0",
     "sms": "^0.0.13"
+=======
+    "react-native-table-component": "^1.2.2",
+    "react-native-vector-icons": "^7.1.0",
+    "react-native-webview": "^13.12.3"
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

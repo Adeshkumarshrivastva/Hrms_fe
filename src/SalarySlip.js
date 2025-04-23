@@ -11,15 +11,22 @@ import {
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+<<<<<<< HEAD
 import Config from 'react-native-config';
 
 const apiUrl = Config.API_URL;
+=======
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
 
 const SalarySlip = ({ route, navigation }) => {
   const { profileImage: initialProfileImage } = route.params || {};
 
   // Year and Month options
+<<<<<<< HEAD
   const years = ['Select', '2022', '2023', '2024','2025'];
+=======
+  const years = ['Select', '2022', '2023', '2024'];
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
   const months = [
     { label: 'Select', value: 'Select' },
     { label: 'January', value: '1' },
@@ -35,6 +42,10 @@ const SalarySlip = ({ route, navigation }) => {
     { label: 'November', value: '11' },
     { label: 'December', value: '12' },
   ];
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
   // Get current year and month
   const currentYear = new Date().getFullYear().toString();
   const currentMonth = (new Date().getMonth() + 1).toString();
@@ -78,10 +89,18 @@ const SalarySlip = ({ route, navigation }) => {
       Alert.alert('Error', 'Please select both year and month');
     }
   };
+<<<<<<< HEAD
   const fetchSalarySlipData = async (employeeId, payYear, payMonth) => {
     setIsLoading(true);
     try {
       const response = await fetch('https://hr360.co.in/generateSalarySlip', {
+=======
+
+  const fetchSalarySlipData = async (employeeId, payYear, payMonth) => {
+    setIsLoading(true);
+    try {
+      const response = await fetch('http://192.168.1.9:4000/generateSalarySlip', {
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -108,6 +127,10 @@ const SalarySlip = ({ route, navigation }) => {
       setIsLoading(false);
     }
   };
+
+
+
+
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
@@ -115,6 +138,10 @@ const SalarySlip = ({ route, navigation }) => {
       </View>
     );
   }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
   return (
       <View style={styles.container}>
         {/* Header */}
@@ -125,10 +152,15 @@ const SalarySlip = ({ route, navigation }) => {
             <Text style={styles.userId}>Employee ID: {employeeId || 'Not Available'}</Text>
           </View>
         </View>
+<<<<<<< HEAD
  {/* Back Button moved to right using inline style */}
             <TouchableOpacity onPress={() => navigation.goBack()} style={{ position: 'absolute', right: 20, top: 35 }}>
                  <Image source={require('./img/BackArrow.png')} style={{ width: 50, height: 50 }} />
             </TouchableOpacity>
+=======
+
+       {/* Body */}
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
 {/* Body */}
 <View style={styles.body}>
   <View style={styles.card}>
@@ -178,6 +210,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     height: 100,
+<<<<<<< HEAD
 },
 profileImage: {
   width: 80,
@@ -202,6 +235,28 @@ userId: {
     color: 'white',
     marginTop: 5,
 },
+=======
+  },
+  profileImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+  },
+  userInfo: {
+    marginLeft: 20,
+    flex: 1,
+  },
+  userName: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  userId: {
+    fontSize: 16,
+    color: '#fff',
+    marginTop: 5,
+  },
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
   body: {
     flex: 1,
     padding: 20,
@@ -209,6 +264,7 @@ userId: {
   },
   card: {
     backgroundColor: 'orange',
+<<<<<<< HEAD
     borderRadius: 10,
     padding: 13,
     shadowColor: '#000',
@@ -221,6 +277,16 @@ userId: {
     alignItems: 'center',
   },
  
+=======
+    borderRadius: 15,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 10,
+    elevation: 5,
+  },
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
   label: {
     fontSize: 16,
     marginVertical: 10,
@@ -250,7 +316,11 @@ userId: {
   },
   buttonText: {
     color: '#fff',
+<<<<<<< HEAD
     fontSize: 15,
+=======
+    fontSize: 18,
+>>>>>>> 1f9d3064a01441185a862325b95bdb298a93cf4d
     fontWeight: 'bold',
   },
   loadingContainer: {
