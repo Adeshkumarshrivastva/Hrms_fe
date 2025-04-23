@@ -35,7 +35,6 @@ const SalarySlip = ({ route, navigation }) => {
     { label: 'November', value: '11' },
     { label: 'December', value: '12' },
   ];
-
   // Get current year and month
   const currentYear = new Date().getFullYear().toString();
   const currentMonth = (new Date().getMonth() + 1).toString();
@@ -82,7 +81,7 @@ const SalarySlip = ({ route, navigation }) => {
   const fetchSalarySlipData = async (employeeId, payYear, payMonth) => {
     setIsLoading(true);
     try {
-      const response = await fetch('http://192.168.1.11:4000/generateSalarySlip', {
+      const response = await fetch('https://hr360.co.in/generateSalarySlip', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -126,8 +125,10 @@ const SalarySlip = ({ route, navigation }) => {
             <Text style={styles.userId}>Employee ID: {employeeId || 'Not Available'}</Text>
           </View>
         </View>
-       {/* Body */}
-
+ {/* Back Button moved to right using inline style */}
+            <TouchableOpacity onPress={() => navigation.goBack()} style={{ position: 'absolute', right: 20, top: 35 }}>
+                 <Image source={require('./img/BackArrow.png')} style={{ width: 50, height: 50 }} />
+            </TouchableOpacity>
 {/* Body */}
 <View style={styles.body}>
   <View style={styles.card}>
@@ -177,26 +178,30 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     height: 100,
-  },
-  profileImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-  },
-  userInfo: {
-    marginLeft: 20,
+},
+profileImage: {
+  width: 80,
+  height: 80,
+  borderRadius: 40, 
+  borderWidth: 2,
+  borderColor: '#fff',
+  backgroundColor: '#ddd',
+  resizeMode: 'contain', 
+},
+userInfo: {
+    marginLeft: 45,
     flex: 1,
-  },
-  userName: {
+},
+userName: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#fff',
-  },
-  userId: {
+    color: 'white',
+},
+userId: {
     fontSize: 16,
-    color: '#fff',
+    color: 'white',
     marginTop: 5,
-  },
+},
   body: {
     flex: 1,
     padding: 20,
@@ -204,14 +209,18 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: 'orange',
-    borderRadius: 15,
-    padding: 20,
+    borderRadius: 10,
+    padding: 13,
     shadowColor: '#000',
-    shadowOpacity: 0.2,
-    shadowOffset: { width: 0, height: 4 },
-    shadowRadius: 10,
-    elevation: 5,
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    marginLeft: '8%',
+    marginTop: 10,
+    width: '90%',
+    alignItems: 'center',
   },
+ 
   label: {
     fontSize: 16,
     marginVertical: 10,
@@ -241,7 +250,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: 15,
     fontWeight: 'bold',
   },
   loadingContainer: {

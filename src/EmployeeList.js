@@ -12,7 +12,7 @@ const EmployeeList = () => {
 
   const fetchEmployees = async () => {
     try {
-      const response = await axios.get("http://192.168.1.11:4000/EmployeeList"); 
+      const response = await axios.get("https://hr360.co.in/EmployeeList"); 
       setEmployees(response.data.data);
       setLoading(false);
     } catch (error) {

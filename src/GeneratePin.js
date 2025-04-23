@@ -1,13 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, TextInput, Button, StyleSheet, SafeAreaView, Text, Image, Alert, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import Config from 'react-native-config';
 
 const apiUrl = Config.API_URL;
-
-
-
 
 const GeneratePin = ({ navigation }) => {
 
@@ -17,9 +13,7 @@ const GeneratePin = ({ navigation }) => {
   const [mobileNumber, setMobileNumber] = useState('');
   const inputs = useRef([]);
 
-
   useEffect(() => {
-    // Retrieve the mobile number from AsyncStorage
     const fetchMobileNumber = async () => {
       try {
         const storedMobileNumber = await AsyncStorage.getItem('mobileNumber');
@@ -52,23 +46,19 @@ const GeneratePin = ({ navigation }) => {
 
       // Make the API request to insert mobile number and PIN
       try {
-        const response = await fetch('http://192.168.1.11:4000/insertPin', {
+        const response = await fetch('https://hr360.co.in/insertPin', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ mobileNumber, pin: pinCode }),
         });
-
         const textResponse = await response.text();
         console.log("Raw response:", textResponse);
-
-
         const result = JSON.parse(textResponse);
-
         if (result.success) {
           Alert.alert('Success', 'PIN has been successfully set.');
-          // navigation.navigate('Home', { pinCode });
+          navigation.navigate('PinVerification');
         } else {
           Alert.alert('Error', 'Failed to set PIN. Please try again.');
         }
@@ -80,7 +70,6 @@ const GeneratePin = ({ navigation }) => {
       Alert.alert('Invalid PIN', 'PIN must be 4 digits.');
     }
   };
-
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
@@ -97,9 +86,9 @@ const GeneratePin = ({ navigation }) => {
         />
       </View>
 
-      {/* Main content */}
-      <View style={styles.mainContent}>
-        <Text style={styles.instructions}>Please generate a 4-digit PIN:</Text>
+      {/* Main content wrapped in a "card" */}
+      <View style={styles.card}>
+        <Text style={styles.instructions}>Please Generate a 4-digit PIN:</Text>
         <View style={styles.pinInputContainer}>
           {pin.map((digit, index) => (
             <TextInput
@@ -109,11 +98,10 @@ const GeneratePin = ({ navigation }) => {
               onChangeText={(text) => handlePinChange(text, index)}
               maxLength={1}
               keyboardType="number-pad"
-              ref={(el) => (inputs.current[index] = el)} // Set the ref for each input
+              ref={(el) => (inputs.current[index] = el)}
             />
           ))}
         </View>
-
         <TouchableOpacity style={styles.setPinButton} onPress={handleSetPin}>
           <Text style={styles.buttonText}>Set PIN</Text>
         </TouchableOpacity>
@@ -121,7 +109,6 @@ const GeneratePin = ({ navigation }) => {
     </SafeAreaView>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -151,38 +138,47 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   logo: {
-    width: 100,
-    height: 60,
+    width: 80,
+    height: 130,
   },
-  mainContent: {
-    flex: 1,
-    paddingHorizontal: 20,
-    marginTop: 150,
+  card: {
+    backgroundColor: 'orange',
+    borderRadius: 10,
+    padding: 13,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    marginLeft: '8%',
+    marginTop: 80,
+    width: '85%',
+    alignItems: 'center',
   },
+
   instructions: {
     fontSize: 15,
     fontWeight: 'bold',
-    color: 'grey',
+    color: 'white',
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: 15,
   },
 
   pinInputContainer: {
     flexDirection: 'row',
-    justifyContent: 'center', // Center the input boxes within the container
-    marginBottom: 150,
+    justifyContent: 'center',
+    marginBottom: 10,
   },
+
   pinInput: {
-    width: 50,
-    height: 50,
-    borderColor: 'gray',
+    width: 40,
+    height: 40,
+    borderColor: 'white',
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 10,
-    fontSize: 24,
+    fontSize: 18,
     textAlign: 'center',
-    color: 'black',
-    marginRight: 12, // Control the space between boxes
+    color: 'white',
   },
   setPinButton: {
     backgroundColor: 'grey',
@@ -190,12 +186,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     alignItems: 'center',
     borderRadius: 5,
-    marginBottom: 40,
+    marginBottom: 10,
   },
+
   buttonText: {
     color: 'white',
-    fontSize: 18,
+    fontSize: 15,
   },
 });
-
 export default GeneratePin;

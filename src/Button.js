@@ -1,26 +1,21 @@
-
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Config from 'react-native-config';
 
 const apiUrl = Config.API_URL;
-
 const Button = ({ navigation, route }) => {
   const initialProfileImage = route?.params?.profileImage || 'https://via.placeholder.com/80';
-
   const [profileImage, setProfileImage] = useState(initialProfileImage);
   const [userName, setUserName] = useState('');
   const [employeeId, setEmployeeId] = useState('');
 
-  // Fetch employee data on component mount
   useEffect(() => {
     const fetchEmployeeData = async () => {
       try {
         const storedEmployeeId = await AsyncStorage.getItem('ecno');
         const storedUserName = await AsyncStorage.getItem('userName');
         const savedImageUri = await AsyncStorage.getItem('profileImage');
-
         if (storedEmployeeId) setEmployeeId(storedEmployeeId);
         if (storedUserName) setUserName(storedUserName);
         if (savedImageUri) setProfileImage(savedImageUri);
@@ -28,49 +23,45 @@ const Button = ({ navigation, route }) => {
         console.error('Error fetching employee data:', error);
       }
     };
-
     fetchEmployeeData();
   }, []);
 
-  const handleLeaveApply = () => {
-    navigation.navigate('LeaveApply');
+  const handleBackButtonPress = () => {
+    navigation.goBack();
   };
-
-  const handleLeaveHistory = () => {
-    navigation.navigate('LeaveHistory');
-  };
-
-
   return (
     <View style={styles.container}>
-      {/* Header with Profile Image */}
+      {/* Header with Back Button, Profile Image, and User Info */}
       <View style={styles.header}>
+        {/* Profile Image */}
         <Image source={{ uri: profileImage }} style={styles.profileImage} />
+
+        {/* User Info */}
         <View style={styles.userInfo}>
           <Text style={styles.userName}>{userName || 'Not Available'}</Text>
           <Text style={styles.userId}>Employee ID: {employeeId || 'Not Available'}</Text>
         </View>
+        {/* Back Button with inline style */}
+        <TouchableOpacity onPress={handleBackButtonPress} style={{ marginLeft: 'auto' }}>
+          <Image source={require('./img/BackArrow.png')} style={{ width: 50, height: 50 }} />
+        </TouchableOpacity>
       </View>
-
       {/* Icon Buttons in One Row */}
       <View style={styles.iconContainer}>
         {/* Leave Apply Button */}
-        <TouchableOpacity style={styles.iconButton} onPress={handleLeaveApply}>
-          <Image source={require('./img/log-out.png')} style={styles.iconImage} />
+        <TouchableOpacity style={styles.iconButton} onPress={() => navigation.navigate('LeaveApply')}>
+          <Image source={require('./img/apply.png')} style={styles.iconImage} />
           <Text style={styles.iconText}>Leave Apply</Text>
         </TouchableOpacity>
-
         {/* Leave History Button */}
-        <TouchableOpacity style={styles.iconButton} onPress={handleLeaveHistory}>
-          <Image source={require('./img/transaction.png')} style={styles.iconImage} />
+        <TouchableOpacity style={styles.iconButton} onPress={() => navigation.navigate('LeaveHistory')}>
+          <Image source={require('./img/scroll.png')} style={styles.iconImage} />
           <Text style={styles.iconText}>Leave History</Text>
         </TouchableOpacity>
-
       </View>
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -82,17 +73,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
     width: '100%',
     height: 100,
   },
   profileImage: {
     width: 80,
     height: 80,
-    borderRadius: 40,
+    borderRadius: 40, 
+    borderWidth: 2,
+    borderColor: '#fff',
+    backgroundColor: '#ddd',
+    resizeMode: 'contain', 
   },
   userInfo: {
-    marginLeft: 20,
+    marginLeft: 45,
     flex: 1,
   },
   userName: {
@@ -109,13 +103,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
-    marginTop: 30,
+    marginTop: '20%',
   },
   iconButton: {
     backgroundColor: '#fff',
     padding: 20,
     borderRadius: 10,
-    width: '32%',
+    width: '42%',
     alignItems: 'center',
     shadowColor: '#000',
     shadowOpacity: 0.1,
@@ -124,8 +118,8 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   iconImage: {
-    width: 50,
-    height: 50,
+    width: 60,
+    height: 60,
   },
   iconText: {
     fontSize: 14,
@@ -135,5 +129,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-
 export default Button;

@@ -75,7 +75,7 @@ const LeaveApply = ({ route, navigation }) => {
       setIsLoading(true);
       try {
         const storedEmployeeId = await AsyncStorage.getItem('ecno');
-        const response = await fetch('http://192.168.1.11:4000/bindLeave', {
+        const response = await fetch('https://hr360.co.in/bindLeave', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -105,10 +105,9 @@ const LeaveApply = ({ route, navigation }) => {
   }, []);
 
   const cardsToDisplay = ['sanction', 'recommended2'];
-
   const SanctionAuthority = async () => {
     try {
-      const response = await fetch('http://192.168.1.11:4000/SanctionAuthority', {
+      const response = await fetch('https://hr360.co.in/SanctionAuthority', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -121,10 +120,7 @@ const LeaveApply = ({ route, navigation }) => {
         Alert.alert('Error', 'Failed to fetch sanction, recommended, and forwarding details.');
         return;
       }
-
       const data = await response.json();
-
-
       if (data.message) {
         Alert.alert('Error', data.message);
         return;
@@ -133,7 +129,6 @@ const LeaveApply = ({ route, navigation }) => {
       console.log('Sanction Authority Data:', data);
 
     } catch (error) {
-
       setErrorMessage('An error occurred while fetching SanctionData.');
       console.error('Error fetching sanction data:', error);
     }
@@ -180,13 +175,11 @@ const LeaveApply = ({ route, navigation }) => {
         );
         return;
       }
-
       // Validation for Sick Leave
       if (leaveTypeID === 5 && !document) {
         Alert.alert('Validation Error', 'Please upload a supporting document for Sick Leave.');
         return;
       }
-
       // Validation for Casual Leave
       if (leaveTypeID === 1) {
         const diffTime = Math.abs(toDate - fromDate);
@@ -196,11 +189,10 @@ const LeaveApply = ({ route, navigation }) => {
           return;
         }
       }
-
       // Prepare leave application data
       const chargeHandoverValue = chargeHandover || '';
       const addressToSave = address || '';
-      const applicationStatusToSave = applicationStatus|| '';
+      const applicationStatusToSave = applicationStatus || '';
       const leaveReasonToSave = leaveReason || '';
       const ToSaveisLocalStay = isLocalStay || ''
       const ToSaveUploadFileFullname = uploadfileFullname || '';
@@ -209,7 +201,6 @@ const LeaveApply = ({ route, navigation }) => {
       const formattedToDate = toDate ? format(toDate, 'dd-MM-yyyy') : null;
       const formattedPermissionFrom = permissionFrom ? format(permissionFrom, 'dd-MM-yyyy') : null;
       const formattedPermissionTo = permissionTo ? format(permissionTo, 'dd-MM-yyyy') : null;
-
       const data = {
         ecno: await AsyncStorage.getItem('ecno'),
         leaveTypeID,
@@ -222,19 +213,18 @@ const LeaveApply = ({ route, navigation }) => {
         permissionTo: formattedPermissionTo,
         isLocalStay: ToSaveisLocalStay ? 'Y' : 'N',
         chargeHandover: chargeHandoverValue,
-        appliedOn:formattedAppliedOn,
-        applicationStatus:applicationStatusToSave ,
+        appliedOn: formattedAppliedOn,
+        applicationStatus: applicationStatusToSave,
         uploadfileFullname: ToSaveUploadFileFullname
-
       };
       console.log('Formatted data being sent to backend:', data);
-      const response = await axios.post('http://192.168.1.11:4000/LeaveApply', data, {
+      const response = await axios.post('https://hr360.co.in/LeaveApply', data, {
         headers: { 'Content-Type': 'application/json' },
       });
 
       if (response.data.success) {
         Alert.alert('Leave application submitted successfully!');
-    
+
       } else {
         Alert.alert(response.data.message || 'Leave application failed.');
       }
@@ -249,18 +239,15 @@ const LeaveApply = ({ route, navigation }) => {
       }
     }
   };
-
   async function LeaveApply() {
     try {
       const formattedFromDate = fromDate ? format(fromDate, 'dd-MM-yyyy') : null;
       const formattedToDate = toDate ? format(toDate, 'dd-MM-yyyy') : null;
-      const response = await axios.post('http://192.168.1.11:4000/checkForAlreadyAppliedLeave', {
+      const response = await axios.post('https://hr360.co.incheckForAlreadyAppliedLeave', {
         ecno: await AsyncStorage.getItem('ecno'),
         fromDate: formattedFromDate,
         toDate: formattedToDate,
       });
-
-
       if (response.data.success) {
         Alert.alert(`Leave already applied on these dates: ${JSON.stringify(response.data.data)}`);
         return false;
@@ -339,7 +326,6 @@ const LeaveApply = ({ route, navigation }) => {
       setStationLeavingFrom(selectedDate);
     }
   };
-
   const handleStationToDateChange = (event, selectedDate) => {
     setShowStationToDatePicker(Platform.OS === 'ios');
     console.log(selectedDate);
@@ -355,6 +341,10 @@ const LeaveApply = ({ route, navigation }) => {
           source={{ uri: profileImage || 'https://via.placeholder.com/80' }}
           style={styles.profileImage}
         />
+        {/* Back Button moved to right using inline style */}
+        <TouchableOpacity onPress={() => navigation.goBack()} style={{ position: 'absolute', right: 20, top: 35 }}>
+          <Image source={require('./img/BackArrow.png')} style={{ width: 50, height: 50 }} />
+        </TouchableOpacity>
         <View style={styles.userInfo}>
           <Text style={styles.userName}>{userName || 'Not Available'}</Text>
           <Text style={styles.userId}>
@@ -362,7 +352,6 @@ const LeaveApply = ({ route, navigation }) => {
           </Text>
         </View>
       </View>
-
       {/* Leave Type Picker */}
       <Text style={[styles.label, { marginTop: 40 }]}>Leave Type:</Text>
       <View style={styles.pickerContainer}>
@@ -468,21 +457,11 @@ const LeaveApply = ({ route, navigation }) => {
         {/* From Date */}
         <View style={{ flex: 1, marginRight: 10 }}>
           <Text style={[styles.label, { color: 'black' }]}>From:</Text>
-          <TouchableOpacity
-            onPress={() => !isLocalStay && setShowStationFromDatePicker(true)}
-            disabled={isLocalStay}
-          >
-            <View style={[
-              styles.datePicker,
-              { backgroundColor: isLocalStay ? '#e0e0e0' : 'white' },
-            ]}>
-              <MaterialCommunityIcons
-                name="calendar"
-                size={18}
-                color={isLocalStay ? '#a9a9a9' : '#6200EE'}
-              />
-              <Text style={{ color: isLocalStay ? '#a9a9a9' : 'black' }}>
-                {permissionFrom ? format(permissionFrom, 'dd-MM-yyyy') : 'Enter Date'}
+          <TouchableOpacity onPress={() => setShowFromDatePicker(true)}>
+            <View style={styles.datePicker}>
+              <MaterialCommunityIcons name="calendar" size={18} color="#6200EE" />
+              <Text style={{ color: 'black' }}>
+                {fromDate ? format(fromDate, 'dd-MM-yyyy') : 'Enter Date'}
               </Text>
             </View>
           </TouchableOpacity>
@@ -491,25 +470,16 @@ const LeaveApply = ({ route, navigation }) => {
         {/* To Date */}
         <View style={{ flex: 1, marginRight: 10 }}>
           <Text style={[styles.label, { color: 'black' }]}>To:</Text>
-          <TouchableOpacity
-            onPress={() => !isLocalStay && setShowStationToDatePicker(true)}
-            disabled={isLocalStay}
-          >
-            <View style={[
-              styles.datePicker,
-              { backgroundColor: isLocalStay ? '#e0e0e0' : 'white' },
-            ]}>
-              <MaterialCommunityIcons
-                name="calendar"
-                size={18}
-                color={isLocalStay ? '#a9a9a9' : '#6200EE'}
-              />
-              <Text style={{ color: isLocalStay ? '#a9a9a9' : 'black' }}>
-                {permissionTo ? format(permissionTo, 'dd-MM-yyyy') : 'Enter Date'}
+          <TouchableOpacity onPress={() => setShowToDatePicker(true)}>
+            <View style={styles.datePicker}>
+              <MaterialCommunityIcons name="calendar" size={18} color="#6200EE" />
+              <Text style={{ color: 'black' }}>
+                {toDate ? format(toDate, 'dd-MM-yyyy') : 'Enter Date'}
               </Text>
             </View>
           </TouchableOpacity>
         </View>
+
 
         {/* Local Stay Checkbox */}
         <View style={{ width: '32%', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', marginLeft: 10 }}>
@@ -538,17 +508,17 @@ const LeaveApply = ({ route, navigation }) => {
           </Text>
         </TouchableOpacity>
       )}
-<View style={styles.cardContainer}>
-    {/* Render only the specified fields */}
-    {cardsToDisplay.map((field, index) => (
-      sanctionData[field] !== undefined && (
-        <View key={index} style={styles.row}>
-          <Text style={styles.label}>{field.replace(/([A-Z])/g, ' $1').toUpperCase()}:</Text>
-          <Text style={styles.value}>{sanctionData[field] || 'N/A'}</Text>
-        </View>
-      )
-    ))}
-  </View>
+      <View style={styles.cardContainer}>
+        {/* Render only the specified fields */}
+        {cardsToDisplay.map((field, index) => (
+          sanctionData[field] !== undefined && (
+            <View key={index} style={styles.row}>
+              <Text style={styles.label}>{field.replace(/([A-Z])/g, ' $1').toUpperCase()}:</Text>
+              <Text style={styles.value}>{sanctionData[field] || 'N/A'}</Text>
+            </View>
+          )
+        ))}
+      </View>
       {/* Submit Button */}
       <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Apply Leave</Text>
@@ -599,17 +569,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
     width: '100%',
-    height: 80,
+    height: 100,
   },
   profileImage: {
     width: 80,
     height: 80,
     borderRadius: 40,
+    borderWidth: 2,
+    borderColor: '#fff',
+    backgroundColor: '#ddd',
+    resizeMode: 'contain',
   },
   userInfo: {
-    marginLeft: 20,
+    marginLeft: 45,
     flex: 1,
   },
   userName: {
@@ -627,24 +600,24 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 13,
     fontWeight: 'bold',
-   
     color: '#333',
     marginLeft: 20,
   },
+
   pickerContainer: {
     width: '90%',
-    borderColor: 'gray',
-    
+    borderColor: 'silver',
+
     borderWidth: 1,
     borderRadius: 5,
     marginLeft: 20,
-    marginBottom: 8, 
+    marginBottom: 8,
   },
- 
+
   picker: {
     height: 50,
     width: '100%',
-    icon:'black',
+    icon: 'red ',
     color: 'black',
   },
   datePicker: {
@@ -656,12 +629,12 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     padding: 8,
     marginLeft: 20,
-    marginBottom: 5, 
+    marginBottom: 5,
   },
-  dropdownIcon: {
+  Icon: {
     position: 'absolute',
-    backgroundColor: 'gray',
-    color:'black',
+    backgroundColor: 'silver',
+    color: 'black',
     right: 10,
     top: 5,
   },
@@ -672,13 +645,13 @@ const styles = StyleSheet.create({
   },
   input: {
     width: '90%',
-    height: 45, 
+    height: 45,
     borderColor: 'gray',
     borderWidth: 1,
     borderRadius: 3,
     paddingHorizontal: 12,
     marginLeft: 20,
-    marginBottom: 6, 
+    marginBottom: 6,
     backgroundColor: '#fff',
     color: 'black',
   },
@@ -686,16 +659,16 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: 'black',
     marginLeft: 20,
-    marginBottom: 3, 
+    marginBottom: 3,
   },
   uploadButton: {
     backgroundColor: 'gray',
     borderRadius: 3,
-    paddingVertical: 12, 
+    paddingVertical: 12,
     alignItems: 'center',
     width: '90%',
     marginLeft: 20,
-    marginBottom: 3, 
+    marginBottom: 3,
   },
   submitButton: {
     backgroundColor: 'gray',
@@ -707,35 +680,35 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   cardContainer: {
-    backgroundColor: 'white',  
-    borderRadius: 8,          
-    shadowColor: '#000',      
+    backgroundColor: 'white',
+    borderRadius: 8,
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,       
+    shadowOpacity: 0.1,
     shadowRadius: 4,
-    elevation: 3,                  
-    margin: 14,               
+    elevation: 3,
+    margin: 14,
   },
-  
+
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 5, 
-    paddingVertical: 8, 
+    marginBottom: 5,
+    paddingVertical: 8,
   },
   tableLabel: {
     fontSize: 10,
     fontWeight: 'bold',
     color: '#333',
-    flex: 1, 
+    flex: 1,
     marginRight: 10,
   },
   value: {
-    color: 'blue', 
-    fontSize: 10, 
+    color: 'blue',
+    fontSize: 10,
     fontWeight: 'bold',
-    flex: 2, 
+    flex: 2,
     textAlign: 'right',
   },
   buttonText: {

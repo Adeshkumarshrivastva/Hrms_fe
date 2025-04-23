@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, TextInput, View, TouchableOpacity, SafeAreaView, Alert, Image,  } from 'react-native';
+import { StyleSheet, Text, TextInput, View, TouchableOpacity, SafeAreaView, Alert, Image, } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 
@@ -13,7 +13,6 @@ const VerifyOtp = () => {
   const { phoneNumber, verificationId } = route.params;
 
   const inputRefs = useRef([]);
-
   useEffect(() => {
     if (isTimerRunning && timer > 0) {
       const interval = setInterval(() => {
@@ -49,7 +48,7 @@ const VerifyOtp = () => {
       const credential = auth.PhoneAuthProvider.credential(verificationId, otpCode);
       await auth().signInWithCredential(credential);
       Alert.alert('Success', 'Phone number verified successfully!');
-      navigation.navigate('Home');
+      navigation.navigate('GeneratePin');
     } catch (error) {
       console.error('Verification error:', error);
       Alert.alert('Error', 'Invalid OTP. Please try again.');
@@ -62,54 +61,53 @@ const VerifyOtp = () => {
     setShowResend(false);
   };
   return (
-    
-      <SafeAreaView style={styles.container}>
-        <View style={styles.header}>
-          <View style={styles.headerTextContainer}>
-            <Text style={styles.headerTextMain}>Human Resource</Text>
-            <Text style={styles.headerTextSub}>Management</Text>
-          </View>
-          <Image
-            source={require('./img/bupb_logo.webp')}
-            style={styles.logo}
-            resizeMode="contain"
-          />
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <View style={styles.headerTextContainer}>
+          <Text style={styles.headerTextMain}>Human Resource</Text>
+          <Text style={styles.headerTextSub}>Management</Text>
         </View>
-        <View style={styles.mainContent}>
-          <View style={styles.card}>
-            <Text style={styles.enterOtpText}>Enter OTP</Text>
-            <View style={styles.otpContainer}>
-              {otp.map((digit, index) => (
-                <TextInput
-                  key={index}
-                  style={styles.otpInput}
-                  keyboardType="number-pad"
-                  maxLength={1}
-                  value={digit}
-                  onChangeText={(value) => handleOtpChange(value, index)}
-                  ref={(ref) => (inputRefs.current[index] = ref)}
-                />
-              ))}
-            </View>
-            {!showResend ? (
-              <TouchableOpacity style={styles.verifyButton} onPress={verifyOtp}>
-                <Text style={styles.buttonText}>Verify OTP</Text>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity style={styles.resendButton} onPress={resendOtp}>
-                <Text style={styles.buttonText}>Resend OTP</Text>
-              </TouchableOpacity>
-            )}
+        <Image
+          source={require('./img/bupb_logo.webp')}
+          style={styles.logo}
+          resizeMode="contain"
+        />
+      </View>
+      <View style={styles.mainContent}>
+        <View style={styles.card}>
+          <Text style={styles.enterOtpText}>Enter Your 6 digit Number:</Text>
+          <View style={styles.otpContainer}>
+            {otp.map((digit, index) => (
+              <TextInput
+                key={index}
+                style={styles.otpInput}
+                keyboardType="number-pad"
+                maxLength={1}
+                value={digit}
+                onChangeText={(value) => handleOtpChange(value, index)}
+                ref={(ref) => (inputRefs.current[index] = ref)}
+              />
+            ))}
           </View>
-          {isTimerRunning && (
-            <Text style={styles.timerText}>{`00:${timer < 10 ? `0${timer}` : timer}`}</Text>
-          )}
-          {showResend && (
-            <Text style={styles.expiryMessage}>OTP has expired.</Text>
+          {!showResend ? (
+            <TouchableOpacity style={styles.verifyButton} onPress={verifyOtp}>
+              <Text style={styles.buttonText}>Verify OTP</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity style={styles.resendButton} onPress={resendOtp}>
+              <Text style={styles.buttonText}>Resend OTP</Text>
+            </TouchableOpacity>
           )}
         </View>
-      </SafeAreaView>
-    
+        {isTimerRunning && (
+          <Text style={styles.timerText}>{`00:${timer < 10 ? `0${timer}` : timer}`}</Text>
+        )}
+        {showResend && (
+          <Text style={styles.expiryMessage}>OTP has expired.</Text>
+        )}
+      </View>
+    </SafeAreaView>
+
   );
 };
 const styles = StyleSheet.create({
@@ -117,10 +115,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'silver',
   },
-  backgroundImage: {
-    flex: 1,
-    resizeMode: 'cover',
-  },
+
   header: {
     backgroundColor: 'orange',
     paddingVertical: 10,
@@ -145,8 +140,8 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   logo: {
-    width: 100,
-    height: 60,
+    width: 80,
+    height: 130,
   },
   mainContent: {
     flex: 1,
@@ -162,7 +157,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 5 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
-    marginTop:80,
+    marginTop: 80,
     width: '100%',
     alignItems: 'center',
   },
@@ -203,22 +198,21 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
-    fontSize: 16,
+    fontSize:15,
   },
   timerText: {
     color: 'red',
     fontWeight: 'bold',
-    fontSize: 18,
+    fontSize: 20,
     textAlign: 'center',
     marginTop: 150,
   },
   expiryMessage: {
     color: 'red',
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: 18,
     textAlign: 'center',
     marginTop: 150,
   },
 });
-
 export default VerifyOtp;

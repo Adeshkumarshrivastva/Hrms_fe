@@ -4,11 +4,8 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { format } from 'date-fns';
 import { Picker } from '@react-native-picker/picker';
-import Config from 'react-native-config';
 
-const apiUrl = Config.API_URL;
-
-const LeaveHistory = ({ route }) => {
+const LeaveHistory = ({ navigation, route }) => {
     const initialProfileImage = route?.params?.profileImage || 'https://via.placeholder.com/80';
     const [profileImage, setProfileImage] = useState(initialProfileImage);
     const [userName, setUserName] = useState('');
@@ -16,11 +13,9 @@ const LeaveHistory = ({ route }) => {
     const [ecno, setEcno] = useState('');
     const [leaveRecords, setLeaveRecords] = useState([]);
     const [errorMessage, setErrorMessage] = useState('');
-    const [leaveTypeID, LeaveTypeID] = useState('');
-    const [fromDate, setFromadte] = useState(format(new Date(), 'dd-MM-yyyy'));
-    const [toDate, setToDate] = useState(format(new Date(), 'dd-MM-yyyy'));
-    const [selectedYear, setSelectedYear] = useState('Select');
-    const years = ['Select', '2022', '2023', '2024', '2025'];
+    const [leaveTypeID, setLeaveTypeID] = useState('');
+    const [fromDate, setFromDate] = useState(format(new Date(), 'yyyy-MM-dd'));
+    const [toDate, setToDate] = useState(format(new Date(), 'yyyy-MM-dd'));
 
     useEffect(() => {
         const fetchEmployeeData = async () => {
@@ -50,17 +45,13 @@ const LeaveHistory = ({ route }) => {
 
         fetchEmployeeData();
     }, []);
+
     useEffect(() => {
-        if (ecno && selectedYear !== 'Select') {
-
-            const fetchLeaveHistory = async (year) => {
-                
+        if (ecno) {
+            const fetchLeaveHistory = async () => {
                 try {
-                    const formattedFromDate = `${year}`; 
-                    const formattedToDate = `${year}`; 
-                    const response = await axios.get('http://192.168.1.11:4000/LeaveHistory', {
-
-                        params: { ecno, fromDate: formattedFromDate, toDate: formattedToDate },
+                    const response = await axios.get('https://hr360.co.in/LeaveHistory', {
+                        params: { ecno, fromDate, toDate },
                     });
                     if (response.data.success) {
                         const formattedLeaveRecords = response.data.data.map((record) => ({
@@ -75,60 +66,52 @@ const LeaveHistory = ({ route }) => {
                         setLeaveRecords([]);
                     }
                 } catch (error) {
-                    
                     setErrorMessage('An error occurred while fetching data.');
                     console.error(error);
                 }
             };
-            fetchLeaveHistory(selectedYear);
+            fetchLeaveHistory();
         }
-    }, [ecno, selectedYear]);
-
-
+    }, [ecno, fromDate, toDate]);
 
     const mapStatus = (status) => {
         if (status === 'A') {
             return 'Applied';
         } else if (status === 'S') {
-            return 'Sanction';
+            return 'Sanctioned';
         } else {
             return status;
         }
     };
 
-
     const handleWithdrawClick = async () => {
-       const formattedFromDate = fromDate ? format(fromDate, 'dd-MM-yyyy') : null;
-            const formattedToDate = toDate ? format(toDate, 'dd-MM-yyyy') : null;
-
         try {
-            const response = await axios.post('http://192.168.1.11:4000/LeaveWithdrawl', {
+            const response = await axios.post('https://hr360.co.in/LeaveWidthdrawl', {
                 ecno: await AsyncStorage.getItem('ecno'),
                 leaveTypeID,
-               fromDate: formattedFromDate,
-               toDate: formattedToDate,
+                fromDate,
+                toDate,
             }, {
                 headers: { 'Content-Type': 'application/json' },
             });
 
             if (response.status !== 200) {
-                Alert.alert('Error');
+                Alert.alert('Error', 'Failed to process the withdrawal');
                 return;
             }
+
             const data = response.data;
             if (data.message) {
                 Alert.alert('Error', data.message);
-                return;
             }
         } catch (error) {
-            setErrorMessage('An error occurred while fetching Data.');
+            setErrorMessage('An error occurred while withdrawing the leave.');
         }
     };
 
-    
     const renderTableHeader = () => (
         <View style={styles.tableHeader}>
-            <Text style={styles.headerText}>Leave Type </Text>
+            <Text style={styles.headerText}>Leave Type</Text>
             <Text style={styles.headerText}>From Date</Text>
             <Text style={styles.headerText}>To Date</Text>
             <Text style={styles.headerText}>Days</Text>
@@ -146,23 +129,16 @@ const LeaveHistory = ({ route }) => {
                 </View>
             </View>
 
-            <Picker
-                selectedValue={selectedYear}
-                style={styles.picker}
-                onValueChange={(itemValue) => setSelectedYear(itemValue)}
-            >
-                {years.map((year) => (
-                    <Picker.Item key={year} label={year} value={year} />
-                ))}
-            </Picker>
+            {/* Back Button moved to right using inline style */}
+            <TouchableOpacity onPress={() => navigation.goBack()} style={{ position: 'absolute', right: 20, top: 35 }}>
+                <Image source={require('./img/BackArrow.png')} style={{ width: 50, height: 50 }} />
+            </TouchableOpacity>
 
             {errorMessage ? <Text style={styles.error}>{errorMessage}</Text> : null}
 
-
-
             <FlatList
                 data={leaveRecords}
-                keyExtractor={(item) => (item.id ? item.id.toString() : Math.random().toString())}
+                keyExtractor={(item) => item.id ? item.id.toString() : Math.random().toString()}
                 renderItem={({ item }) => (
                     <View style={styles.tableRow}>
                         <View style={styles.tableDataRow}>
@@ -189,7 +165,6 @@ const LeaveHistory = ({ route }) => {
         </View>
     );
 };
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -201,26 +176,29 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
         width: '100%',
         height: 100,
     },
     profileImage: {
         width: 80,
         height: 80,
-        borderRadius: 40,
-    },
+        borderRadius: 40, 
+        borderWidth: 2,
+        borderColor: '#fff',
+        backgroundColor: '#ddd',
+        resizeMode: 'contain', 
+      },
     userInfo: {
-        marginLeft: 20,
+        marginLeft: 45,
         flex: 1,
     },
     userName: {
-        fontSize: 18,
+        fontSize: 20,
         fontWeight: 'bold',
         color: 'white',
     },
     userId: {
-        fontSize: 14,
+        fontSize: 16,
         color: 'white',
         marginTop: 5,
     },
@@ -266,13 +244,13 @@ const styles = StyleSheet.create({
         paddingHorizontal: 5,
     },
     withdrawButton: {
-        backgroundColor: 'red',
+        backgroundColor: 'gray',
         paddingVertical: 5,
-        marginTop: 5,
+        marginTop: 4,
     },
     withdrawButtonText: {
-        color: 'white',
-        fontSize: 5,
+        color: 'Red',
+        fontSize: 3,
         textAlign: 'center',
     },
     picker: {
@@ -281,5 +259,4 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
 });
-
 export default LeaveHistory;

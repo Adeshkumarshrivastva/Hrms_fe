@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, Animated } from 'react-native';
-import { useNavigation } from '@react-navigation/native'; 
+import { useNavigation } from '@react-navigation/native';
 
 const Loading = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const navigation = useNavigation(); 
+  const navigation = useNavigation();
   const opacity = new Animated.Value(0);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsLoading(false); 
-      navigation.replace('PhoneVerification'); 
-    }, 3000); 
+      setIsLoading(false);
+      navigation.replace('PhoneVerification');
+    }, 3000);
 
     // Fade-in animation
     Animated.timing(opacity, {
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white', 
+    backgroundColor: 'silver',
     padding: 20,
   },
   card: {
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    width: '80%', 
+    width: '80%',
     elevation: 5,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 10 },

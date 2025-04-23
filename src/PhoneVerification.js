@@ -1,120 +1,127 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, View, TouchableOpacity, SafeAreaView, Alert, Image, Dimensions } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+  StyleSheet, Text, TextInput, View, TouchableOpacity,
+  SafeAreaView, Alert, Image, Dimensions
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Config from 'react-native-config';
-
-const apiUrl = Config.API_URL;
+import DeviceInfo from 'react-native-device-info';
 
 const { height } = Dimensions.get('window');
 
 const PhoneVerification = () => {
   const [countryCode, setCountryCode] = useState('+91');
   const [mobileNumber, setMobileNumber] = useState('');
+  const [deviceId, setDeviceId] = useState('');
   const navigation = useNavigation();
 
-  const handleCountryCodeChange = (code) => {
-    setCountryCode(code);
+  useEffect(() => {
+    getDeviceId();
+  }, []);
+  const getDeviceId = async () => {
+    try {
+      const uniqueId = await DeviceInfo.getUniqueId();
+      setDeviceId(uniqueId);
+      console.log('Unique Device ID:', uniqueId);
+
+      const deviceModel = await DeviceInfo.getModel();
+      console.log('Device Model:', deviceModel);
+
+      const systemVersion = await DeviceInfo.getSystemVersion();
+      console.log('System Version:', systemVersion);
+    } catch (error) {
+      console.log('Error fetching device info:', error);
+    }
   };
 
-  const handleInputChange = (input) => {
-    const numericInput = input.replace(/[^0-9]/g, '');
-    setMobileNumber(numericInput);
-  };
+  const handleCountryCodeChange = (code) => setCountryCode(code);
+  const handleInputChange = (input) => setMobileNumber(input.replace(/[^0-9]/g, ''));
 
   const proceed = async () => {
-    console.log('Proceed button clicked');
-    if (mobileNumber.length >= 10) {
+    if (mobileNumber.length === 10) {
       let phoneNumberWithCountryCode = `${countryCode}${mobileNumber}`;
-      console.log('Checking mobile number:', mobileNumber);
 
       try {
-        const response = await fetch('http://192.168.1.11:4000/checkMobile', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ mobileNumber }),
-        });
+
+        const response = await fetch(
+          `https://hr360.co.in/checkMobile?mobileNumber=${encodeURIComponent(mobileNumber)}`
+        );
         const result = await response.json();
-        console.log('API Response:', result);
 
         if (result.exists) {
+          // Send OTP to the number
           const confirmation = await auth().signInWithPhoneNumber(phoneNumberWithCountryCode);
+
+          // Store the mobile number and deviceId in AsyncStorage
           await AsyncStorage.setItem('mobileNumber', mobileNumber);
+          await AsyncStorage.setItem('deviceId', deviceId);
+
+          // Navigate to OTP verification screen with deviceId and verificationId
           navigation.navigate('VerifyOtp', {
             phoneNumber: phoneNumberWithCountryCode,
             verificationId: confirmation.verificationId,
+            deviceId: deviceId,
           });
         } else {
           Alert.alert('Error', 'Mobile number not found.');
         }
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Error checking number:', error);
         Alert.alert('Error', 'Failed to check mobile number.');
       }
     } else {
       Alert.alert('Invalid Number', 'Please enter a valid 10-digit mobile number.');
     }
   };
+
   return (
-      <SafeAreaView style={styles.container}>
-        {/* Header */}
-        <View style={styles.header}>
-          <View style={styles.headerTextContainer}>
-            <Text style={styles.headerTextMain}>Human Resource</Text>
-            <Text style={styles.headerTextSub}>Management</Text>
-          </View>
-
-          {/* Logo on the right */}
-          <Image
-            source={require('./img/bupb_logo.webp')}
-            style={styles.logo}
-            resizeMode="contain"
-          />
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <View style={styles.headerTextContainer}>
+          <Text style={styles.headerTextMain}>Human Resource</Text>
+          <Text style={styles.headerTextSub}>Management</Text>
         </View>
-        <View style={styles.mainContent}>
-          {/* Card for inputs and button */}
-          <View style={styles.card}>
-            <View style={styles.inputContainer}>
-              <TextInput
-                style={styles.countryCodeInput}
-                keyboardType="phone-pad"
-                placeholder="+"
-                maxLength={3}
-                value={countryCode}
-                onChangeText={handleCountryCodeChange}
-              />
-              <TextInput
-                style={styles.mobileInput}
-                keyboardType="phone-pad"
-                placeholder="Enter Mobile Number"
-                placeholderTextColor="gray"
-                maxLength={12}
-                value={mobileNumber}
-                onChangeText={handleInputChange}
-              />
-            </View>
+        <Image
+          source={require('./img/bupb_logo.webp')}
+          style={styles.logo}
+          resizeMode="contain"
+        />
+      </View>
 
-            <TouchableOpacity style={styles.button} onPress={proceed}>
-              <Text style={styles.buttonText}>Proceed</Text>
-            </TouchableOpacity>
+      <View style={styles.mainContent}>
+        <View style={styles.card}>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.countryCodeInput}
+              keyboardType="phone-pad"
+              placeholder="+"
+              maxLength={3}
+              value={countryCode}
+              onChangeText={handleCountryCodeChange}
+            />
+            <TextInput
+              style={styles.mobileInput}
+              keyboardType="phone-pad"
+              placeholder="Enter Mobile Number"
+              placeholderTextColor="gray"
+              maxLength={10}
+              value={mobileNumber}
+              onChangeText={handleInputChange}
+            />
           </View>
+          <TouchableOpacity style={styles.button} onPress={proceed}>
+            <Text style={styles.buttonText}>Proceed</Text>
+          </TouchableOpacity>
         </View>
-      </SafeAreaView>
-   
+      </View>
+    </SafeAreaView>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    background:'silver'
-  },
-  backgroundImage: {
-    flex: 1,
-    resizeMode: 'cover',
+    backgroundColor: 'silver',
   },
   header: {
     backgroundColor: 'orange',
@@ -134,19 +141,16 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: 'white',
-    textAlign: 'center',
-    marginLeft: 5,
   },
   headerTextSub: {
     fontSize: 20,
     fontWeight: 'bold',
     color: 'white',
-    textAlign: 'center',
     marginTop: 5,
   },
   logo: {
-    width: 100,
-    height: 60,
+    width: 80,
+    height: 130,
   },
   mainContent: {
     flex: 1,
@@ -162,7 +166,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    marginTop:"-60%",
+    marginTop: '-60%',
     elevation: 5,
   },
   inputContainer: {
@@ -195,12 +199,13 @@ const styles = StyleSheet.create({
     padding: 15,
     alignItems: 'center',
     borderRadius: 8,
-    width: '60%', 
-    alignSelf: 'center', 
-},
+    width: '60%',
+    alignSelf: 'center',
+  },
   buttonText: {
     color: 'white',
-    fontSize: 15,
+    fontSize:15,
   },
 });
+
 export default PhoneVerification;
